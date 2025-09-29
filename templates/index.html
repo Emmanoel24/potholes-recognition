@@ -1,14 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>🚗 RoadSense AI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RoadVision — Pothole Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛣</text></svg>">
 </head>
 <body>
-  <h1>🚗 RoadSense AI - Pothole Detection</h1>
-  <form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" />
-    <button type="submit">Upload & Detect</button>
-  </form>
-  <a href="/analytics">View Analytics</a>
+  <div class="page">
+    <header class="nav">
+      <div class="brand">
+        <span class="brand-icon">🛣</span>
+        <span class="brand-name">RoadVision</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#" class="link muted">Docs</a>
+        <a href="#" class="link muted">About</a>
+        <a href="https://github.com/Emmanoel24/potholes-recognition" target="_blank" class="btn ghost">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <div class="hero-text">
+        <h1 class="title">Detect potholes with <span class="grad">AI precision</span></h1>
+        <p class="subtitle">
+          Upload a road image and get instant detections. Built with YOLOv8 + Flask. Fast, accurate, elegant.
+        </p>
+      </div>
+
+      <form id="uploadForm" class="card upload" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+        <div id="dropzone" class="dropzone" tabindex="0">
+          <input id="fileInput" type="file" name="file" accept="image/*" hidden>
+          <div class="dz-visual">
+            <div class="dz-ring"></div>
+            <div class="dz-icon">⬆</div>
+          </div>
+          <div class="dz-text">
+            <strong>Drag & drop</strong> an image here, or <span class="link" id="browseLink">browse</span>
+            <div class="hint">PNG / JPG up to ~10MB</div>
+          </div>
+          <img id="preview" class="preview" alt="" />
+        </div>
+
+        <div class="actions">
+          <button id="detectBtn" class="btn primary" type="submit" disabled>
+            Detect Potholes
+          </button>
+          <button id="clearBtn" class="btn ghost" type="button">Clear</button>
+        </div>
+      </form>
+    </main>
+
+    <footer class="footer">
+      <span class="muted">© {{ 2025 }} RoadVision. Built with ❤ for safer roads.</span>
+    </footer>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loader" class="loader hidden">
+    <div class="loader-card">
+      <div class="spinner"></div>
+      <div class="loader-text">Analyzing image…</div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

@@ -1,11 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Detection Result</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Results — RoadVision</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔎</text></svg>">
 </head>
 <body>
-  <h1>✅ Detection Complete</h1>
-  <img src="{{ result_image }}" alt="Result" width="600">
-  <br><a href="/">Back to Home</a>
+  <div class="page">
+    <header class="nav">
+      <div class="brand">
+        <span class="brand-icon">🛣</span>
+        <a class="brand-name" href="{{ url_for('index') }}">RoadVision</a>
+      </div>
+      <nav class="nav-links">
+        <a href="https://github.com/Emmanoel24/potholes-recognition" target="_blank" class="link muted">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="content">
+      <div class="card result">
+        <div class="result-head">
+          <h2 class="title-sm">Detection Complete</h2>
+          <div class="chips">
+            <span class="chip">{{ num_detections }} detection{{ '' if num_detections == 1 else 's' }}</span>
+          </div>
+        </div>
+
+        <div class="result-img-wrap">
+          <!-- We pass a static path like 'static/results/result.jpg' from Flask -->
+          <img class="result-img" src="{{ result_image }}" alt="Detection result" />
+        </div>
+
+        <div class="actions">
+          <a class="btn ghost" href="{{ url_for('index') }}">Upload Another</a>
+          <a class="btn" download="roadvision_result.jpg" href="{{ result_image }}">Download Result</a>
+          <a class="btn subtle" href="{{ url_for('analytics') }}">View Analytics</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span class="muted">Model predictions may vary based on training data quality.</span>
+    </footer>
+  </div>
 </body>
 </html>

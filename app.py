@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 from ultralytics import YOLO
 import os
 import pyttsx3
@@ -6,9 +6,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import threading
+from datetime import datetime
 
 app = Flask(__name__)
-model = YOLO("models/best.pt")
+model = YOLO("models/best.pt")  # make sure this path is correct
 
 UPLOAD_FOLDER = "static/uploads"
 RESULT_FOLDER = "static/results"
@@ -35,9 +36,12 @@ def upload():
     # ✅ Run YOLO detection
     results = model.predict(source=filepath, save=True, conf=0.1)
     result_dir = results[0].save_dir
+
+    # ✅ Debugging: print detected classes and confidence
     for r in results:
         for box in r.boxes:
-            print("Class:", model.names[int(box.cls)], " | Confidence:", float(box.conf))
+            print("Class:", model.names[int(box.cls)], "| Confidence:", float(box.conf))
+
     # ✅ Find saved result image
     result_img_path = None
     for f in os.listdir(result_dir):
@@ -74,14 +78,21 @@ def upload():
         engine.runAndWait()
 
     # 🔊 Always speak test message
-    threading.Thread(target=speak_alert, args=("🚀 Voice test from inside Flask! It works!",)).start()
+    threading.Thread(target=speak_alert, args=("🚀 Detection complete.",)).start()
 
     # 🔊 Only speak if pothole is found
     if pothole_found:
         threading.Thread(target=speak_alert, args=("⚠ Warning! Pothole detected in the uploaded image.",)).start()
 
+    # ✅ Add cache-busting to always refresh image
+    cache_buster = f"?t={int(datetime.now().timestamp())}"
+
     # ✅ Return result page
-    return render_template("result.html", result_image=new_path, num_detections=num_detections)
+    return render_template(
+        "result.html",
+        result_image=new_path + cache_buster,
+        num_detections=num_detections
+    )
 
 @app.route("/analytics")
 def analytics():
