@@ -1,0 +1,23 @@
+# Python
+_pycache_/
+*.pyc
+
+# Virtual env
+venv/
+.env/
+
+# Training outputs and large artifacts
+runs/
+data/
+*.log
+
+# App-generated files
+static/uploads/
+static/results/
+
+# OS / Editor
+.DS_Store
+.vscode/
+
+# Optional: ignore weights if >100MB (uncomment if needed)
+# models/*.pt
