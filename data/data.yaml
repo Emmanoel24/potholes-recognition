@@ -1,0 +1,6 @@
+train: C:\Users\OWNER\Desktop\road_vision\data\train\images
+val: C:\Users\OWNER\Desktop\road_vision\data\val\images
+
+nc: 2 # number of classes (e.g., pothole, vehicle)
+names: ["pothole", "vehicle"]
+  
